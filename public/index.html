@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💆🏻‍♀ Han Spa</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+  <button type="button" id="themeToggleBtn" class="theme-toggle" aria-label="Chuyển chế độ sáng tối">🌙 Dark</button>
+  <div class="container">
+    <!-- Left Panel: Form -->
+    <div class="left-panel">
+      <h2>📋 Đặt lịch mới</h2>
+      
+      <form id="bookingForm">
+        <div class="form-group">
+          <label>Tên khách</label>
+          <input type="text" id="customerName" required>
+        </div>
+
+        <div class="form-group">
+          <label>Dịch vụ</label>
+          <select id="serviceSelect" required>
+            <!-- Options will be populated by JS -->
+          </select>
+        </div>
+
+        <div class="form-group" id="extraPriceGroup" style="display: none;">
+          <label>Giá tiền</label>
+          <input type="number" id="extraPriceInput" min="0" placeholder="Giá (VNĐ)" value="0">
+        </div>
+
+        <div class="form-group">
+          <label>Giường</label>
+          <select id="bedSelect" required>
+            <option value="Giường trong">Giường trong</option>
+            <option value="Giường giữa">Giường giữa</option>
+            <option value="Giường ngoài">Giường ngoài</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Ghi chú</label>
+          <input type="text" id="note" placeholder="Ghi chú">
+        </div>
+
+        <div class="form-group">
+          <label>Ngày</label>
+          <input type="date" id="dateInput" required>
+        </div>
+
+        <div class="form-group">
+          <label>Giờ bắt đầu</label>
+          <div class="time-input">
+            <input type="number" id="hourInput" min="0" max="23" value="8" required>
+            <span>:</span>
+            <input type="number" id="minuteInput" min="0" max="59" value="0" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-save">💾 Lưu</button>
+        <button type="button" class="btn btn-delete" id="deleteBtn" style="display: none;">🗑 Xoá</button>
+      </form>
+    </div>
+
+    <!-- Right Panel: Bookings Display -->
+    <div class="right-panel">
+
+      <!-- Bed 1 -->
+      <div class="booking-section">
+        <h3>🛏 Giường trong</h3>
+        <div class="table-container">
+          <table id="bedInTable">
+            <thead>
+              <tr>
+                <th>Khách</th>
+                <th>Dịch vụ</th>
+                <!-- <th>Bắt đầu</th> -->
+                <!-- <th>Kết thúc</th> -->
+                <th>Thời gian</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Bed 2 -->
+      <div class="booking-section">
+        <h3>🛏 Giường giữa</h3>
+        <div class="table-container">
+          <table id="bedMiddleTable">
+            <thead>
+              <tr>
+                <th>Khách</th>
+                <th>Dịch vụ</th>
+                <th>Thời gian</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Bed 3 -->
+      <div class="booking-section">
+        <h3>🛏 Giường ngoài</h3>
+        <div class="table-container">
+          <table id="bedOutTable">
+            <thead>
+              <tr>
+                <th>Khách</th>
+                <th>Dịch vụ</th>
+                <!-- <th>Bắt đầu</th>
+                <th>Kết thúc</th> -->
+                <th>Thời gian</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="timeline-section">
+        <h3>📊 Timeline</h3>
+        <div class="timeline-scroll">
+          <canvas id="timelineCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/vn.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
