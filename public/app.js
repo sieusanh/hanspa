@@ -33,10 +33,9 @@
   const extraServicePrice = 0;
 
    const services = {
-    [`Gội đầu dưỡng sinh (${hairCareDuration3}p) - ${hairCarePrice3}K`]: { duration: hairCareDuration3, price: hairCarePrice3, subName: `Gội (${hairCareDuration3}p) - ${hairCarePrice3}K` },
     [`Gội đầu dưỡng sinh (${hairCareDuration1}p) - ${hairCarePrice1}K`]: { duration: hairCareDuration1, price: hairCarePrice1, subName: `Gội (${hairCareDuration1}p) - ${hairCarePrice1}K` },
     [`Gội đầu dưỡng sinh (${hairCareDuration2}p) - ${hairCarePrice2}K`]: { duration: hairCareDuration2, price: hairCarePrice2, subName: `Gội (${hairCareDuration2}p) - ${hairCarePrice2}K` },
-    // [`Gội đầu dưỡng sinh (${hairCareDuration3}p) - ${hairCarePrice3}K`]: { duration: hairCareDuration3, price: hairCarePrice3, subName: `Gội (${hairCareDuration3}p) - ${hairCarePrice3}K` },
+    [`Gội đầu dưỡng sinh (${hairCareDuration3}p) - ${hairCarePrice3}K`]: { duration: hairCareDuration3, price: hairCarePrice3, subName: `Gội (${hairCareDuration3}p) - ${hairCarePrice3}K` },
     [`Gội đầu dưỡng sinh (${hairCareDuration4}p) - ${hairCarePrice4}K`]: { duration: hairCareDuration4, price: hairCarePrice4, subName: `Gội (${hairCareDuration4}p) - ${hairCarePrice4}K` },
     [`Gội đầu dưỡng sinh (${hairCareDuration5}p) - ${hairCarePrice110}K`]: { duration: hairCareDuration5, price: hairCarePrice110, subName: `Gội (${hairCareDuration5}p) - ${hairCarePrice110}K` },
     [`Dịch vụ thêm (${extraServiceDuration}p)`]: { duration: extraServiceDuration, price: extraServicePrice, subName: `Thêm (${extraServiceDuration}p) - ${extraServicePrice}K` },
