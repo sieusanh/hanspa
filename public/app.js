@@ -117,38 +117,21 @@ async function loadBookings() {
   }
   loadBookingsInProgress = true;
   
-  // #region agent log
-  fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:112',message:'loadBookings entry',data:{currentDate:currentDate,apiUrl:API_URL,timestamp:new Date().toISOString()},timestamp:Date.now(),hypothesisId:'A,B,C,D',runId:'post-fix'})}).catch(()=>{});
-  // #endregion
   try {
     const fetchUrl = `${API_URL}/bookings/${currentDate}`;
-    // #region agent log
-    fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:114',message:'Before fetch',data:{fetchUrl:fetchUrl,currentDate:currentDate},timestamp:Date.now(),hypothesisId:'B,D',runId:'post-fix'})}).catch(()=>{});
-    // #endregion
     const response = await fetch(fetchUrl);
-    // #region agent log
-    fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:115',message:'After fetch',data:{status:response.status,ok:response.ok,statusText:response.statusText,contentType:response.headers.get('content-type')},timestamp:Date.now(),hypothesisId:'A,E',runId:'post-fix'})}).catch(()=>{});
-    // #endregion
-    
     if (!response.ok) {
       throw new Error(`Server error: ${response.status}`);
     }
     
     const bookings = await response.json();
-    // #region agent log
-    fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:116',message:'After json parse',data:{bookingsCount:bookings.length,bookingsType:typeof bookings},timestamp:Date.now(),hypothesisId:'E',runId:'post-fix'})}).catch(()=>{});
-    // #endregion
-    
+
     displayBookings(bookings);
     drawTimeline(bookings);
-    // #region agent log
-    fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:118',message:'loadBookings success',data:{success:true},timestamp:Date.now(),hypothesisId:'A,B,C,D,E',runId:'post-fix'})}).catch(()=>{});
-    // #endregion
+
   } catch (error) {
-    // #region agent log
-    fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:120',message:'loadBookings error caught',data:{errorMessage:error.message,errorName:error.name,errorStack:error.stack?.substring(0,200),errorType:error.constructor.name},timestamp:Date.now(),hypothesisId:'A,B,C,D,E',runId:'post-fix'})}).catch(()=>{});
-    // #endregion
     console.error('Error loading bookings:', error);
+    console.log('Loi loadBookings ', error);
     // Only show notification for unexpected errors, not network failures during auto-refresh
     // Silent fail on auto-refresh network errors to avoid spamming user
     if (error.message !== 'Failed to fetch') {
@@ -170,7 +153,7 @@ function displayBookings(bookings) {
   bedOutTable.innerHTML = '';
   
   const now = new Date();
-  
+console.log('========= bookings ', bookings)
   bookings.forEach(booking => {
     const row = createBookingRow(booking, now);
     
@@ -365,6 +348,7 @@ async function saveBooking() {
       showNotification(result.error || 'Lỗi khi lưu', 'error');
     }
   } catch (error) {
+    console.log('===== loigi ', error)
     console.error('Error saving booking:', error);
     showNotification('Lỗi kết nối', 'error');
   }

@@ -25,11 +25,14 @@ const TELEGRAM_TOKEN = "8566802281:AAEvStO3wZGw-5nAgOtnNgOzcCJPVFAR5nk";
 const TELEGRAM_CHAT_ID = 8445814360;
 const ALERT_MINUTES = 20;
 const BUFFER_MINUTES = 10;
+const __dirname = import.meta.dirname;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Database initialization
 // const db = new sqlite3.Database('./bookings.db', (err) => {
@@ -51,7 +54,7 @@ async function initDatabase() {
                 bed TEXT NOT NULL,
                 note TEXT DEFAULT '',
                 start TEXT NOT NULL,
-                end TEXT NOT NULL,
+                "end" TEXT NOT NULL,
                 price INTEGER DEFAULT 0,
                 notified INTEGER DEFAULT 0
             );` 
@@ -63,101 +66,23 @@ async function initDatabase() {
     console.log('Database table ready');
 }
 
-// // Telegram notification function
-// async function sendTelegram(message) {
-//   try {
-//     await axios.post(
-//       `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
-//       {
-//         chat_id: TELEGRAM_CHAT_ID,
-//         text: message
-//       },
-//       { timeout: 5000 }
-//     );
-//   } catch (error) {
-//     console.error('Telegram error:', error.message);
-//   }
-// }
-
-// // Telegram notification loop
-// function startTelegramLoop() {
-//   setInterval(() => {
-//     const now = new Date();
-//     const alertTime = new Date(now.getTime() + ALERT_MINUTES * 60000);
-//     // #region agent log
-//     fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'server.js:76',message:'Telegram loop tick',data:{nowTime:now.toISOString(),alertTime:alertTime.toISOString(),alertMinutes:ALERT_MINUTES},timestamp:Date.now(),hypothesisId:'E'})}).catch(()=>{});
-//     // #endregion
-
-//     db.all(
-//       `SELECT id, customer, service, bed, start
-//        FROM bookings
-//        WHERE notified = 0`,
-//       [],
-//       (err, rows) => {
-//         if (err) {
-//           console.error('Error fetching bookings:', err);
-//           return;
-//         }
-//         // #region agent log
-//         fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'server.js:91',message:'Query results',data:{rowCount:rows.length,rowsData:rows.map(r=>({id:r.id,customer:r.customer,start:r.start}))},timestamp:Date.now(),hypothesisId:'E'})}).catch(()=>{});
-//         // #endregion
-
-//         rows.forEach((row) => {
-//           const startTime = new Date(row.start);
-//           // #region agent log
-//           fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'server.js:94',message:'Processing booking',data:{bookingId:row.id,startTime:startTime.toISOString(),isInRange:now<=startTime&&startTime<=alertTime,customer:row.customer,service:row.service,bed:row.bed},timestamp:Date.now(),hypothesisId:'B,E'})}).catch(()=>{});
-//           // #endregion
-          
-//           if (now <= startTime && startTime <= alertTime) {
-//             const message = `⏰ ${startTime.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}\n👤 ${row.customer}\n💆 ${row.service}\n🛏 ${row.bed}`;
-//             // #region agent log
-//             fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'server.js:96',message:'Message constructed',data:{messageLength:message.length,messageCharCodes:Array.from(message).slice(0,20).map(c=>c.charCodeAt(0)),messageRaw:message},timestamp:Date.now(),hypothesisId:'B,E'})}).catch(()=>{});
-//             // #endregion
-            
-//             sendTelegram(message);
-            
-//             db.run(
-//               'UPDATE bookings SET notified = 1 WHERE id = ?',
-//               [row.id],
-//               (err) => {
-//                 if (err) {
-//                   console.error('Error updating notification status:', err);
-//                 }
-//               }
-//             );
-//           }
-//         });
-//       }
-//     );
-//   }, 30000); // Check every 30 seconds
-// }
-
 // API Routes
 
 // Get all bookings for a specific date
 app.get('/api/bookings/:date', async (req, res) => {
   const date = req.params.date;
-  // #region agent log
-  fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'server.js:147',message:'API bookings request',data:{date:date,timestamp:new Date().toISOString()},timestamp:Date.now(),hypothesisId:'A,D'})}).catch(()=>{});
-  // #endregion
-  
   try {
-  const { rows } = await sql`
-    SELECT id, customer, service, bed, note, start, end, price
-     FROM bookings
-     WHERE date(start) = ${date}
-     ORDER BY start`;
-  } catch (err) {
-        // #region agent log
-        fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'server.js:158',message:'Database error',data:{errorMessage:err.message,errorCode:err.code},timestamp:Date.now(),hypothesisId:'A'})}).catch(()=>{});
-        // #endregion
-        res.status(500).json({ error: err.message });
-  }
+    //  WHERE date(start) = ${date}
+    const rows = await sql`
+        SELECT id, customer, service, bed, note, start, "end", price
+        FROM bookings
+        WHERE date(start) = ${date}::date
+        ORDER BY start`;
 
-    // #region agent log
-        fetch('http://127.0.0.1:7243/ingest/93b8abfe-d2bb-48b1-83dc-88f2846f8a61',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'server.js:160',message:'API bookings success',data:{rowCount:rows.length,date:date},timestamp:Date.now(),hypothesisId:'A,D'})}).catch(()=>{});
-        // #endregion
-        res.json(rows);  
+    res.json(rows || []);  
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
   
 });
 
@@ -170,18 +95,14 @@ app.post('/api/bookings', async (req, res) => {
   const dateStr = startDate.toISOString().split('T')[0];
   
   try {
-    const { rows } = await sql
-    `SELECT start, end FROM bookings
-     WHERE bed = ${bed} AND date(start) = ${dateStr}`;
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
-    
-      
-      // Check for overlaps: strictly disallow any overlap
+    const rows = await sql
+    `SELECT start, "end" FROM bookings
+     WHERE bed = ${bed} AND date(start) = ${dateStr}::date`;
+
+     // Check for overlaps: strictly disallow any overlap
       const newStart = new Date(start);
       const newEnd = new Date(end);
-      
+
       for (const row of rows) {
         const existingStart = new Date(row.start);
         const existingEnd = new Date(row.end);
@@ -190,15 +111,21 @@ app.post('/api/bookings', async (req, res) => {
         }
       }
       
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+      
+      
       // Insert new booking
       try {
-      await sql
-        `INSERT INTO bookings (customer, service, bed, note, start, end, price, notified)
+        await sql
+        `INSERT INTO bookings (customer, service, bed, note, start, "end", price, notified)
          VALUES (${customer || ''}, ${service}, ${bed}, ${note || ''}, ${start}, ${end}, ${price || 0}, 0)`;
       } catch (err) {
+        console.log('======== loi gi ', err)
         res.status(500).json({ error: err.message });
       }
-      res.json({ id: this.lastID, message: 'Booking created successfully' });
+      res.json({ message: 'Booking created successfully' });
 });
 
 // Update existing booking
@@ -210,14 +137,11 @@ app.put('/api/bookings/:id', async (req, res) => {
   const dateStr = startDate.toISOString().split('T')[0];
 
   try {
-   const { rows } = await sql
-    `SELECT start, end FROM bookings
-     WHERE bed = ${bed} AND date(start) = ${dateStr} AND id != ${id}`;
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
+   const rows = await sql
+    `SELECT start, "end" FROM bookings
+     WHERE bed = ${bed} AND date(start) = ${dateStr}::date AND id != ${id}`;
 
-      // Check for overlaps: strictly disallow any overlap
+     // Check for overlaps: strictly disallow any overlap
       const newStart = new Date(start);
       const newEnd = new Date(end);
       for (const row of rows) {
@@ -227,19 +151,20 @@ app.put('/api/bookings/:id', async (req, res) => {
           return res.status(400).json({ error: 'Khung giờ bị trùng' });
         }
       }
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+
+      
 
       try {
         await sql
-            `UPDATE bookings SET customer = ${customer || ''}, service = ${service}, bed = ${bed}, note = ${note || ''}, start = ${start}, end = ${end}, price = ${price || 0}
+            `UPDATE bookings SET customer = ${customer || ''}, service = ${service}, bed = ${bed}, note = ${note || ''}, start = ${start}, "end" = ${end}, price = ${price || 0}
             WHERE id = ${id}`;
       } catch (err) {
         res.status(500).json({ error: err.message });
         }
-      if (this.changes === 0) {
-            res.status(404).json({ error: 'Không tìm thấy lịch hẹn' });
-          } else {
-            res.json({ id, message: 'Booking updated successfully' });
-          }
+      res.json({ id, message: 'Booking updated successfully' });
 });
 
 // Delete booking
@@ -251,7 +176,7 @@ app.delete('/api/bookings/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-    res.json({ message: 'Booking deleted successfully', changes: this.changes });
+    res.json({ message: 'Booking deleted successfully' });
 });
 
 // Get services
