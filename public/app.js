@@ -144,39 +144,47 @@ async function loadBookings() {
 
 // Display bookings in tables
 function displayBookings(bookings) {
-  const bedInTable = document.getElementById('bedInTable').querySelector('tbody');
-  const bedMiddleTable = document.getElementById('bedMiddleTable').querySelector('tbody');
-  const bedOutTable = document.getElementById('bedOutTable').querySelector('tbody');
+    const bed1Table = document.getElementById('bed1Table').querySelector('tbody');
+    const bed2Table = document.getElementById('bed2Table').querySelector('tbody');
+    const bed3Table = document.getElementById('bed3Table').querySelector('tbody');
+    const bed4Table = document.getElementById('bed4Table').querySelector('tbody');
   
-  bedInTable.innerHTML = '';
-  bedMiddleTable.innerHTML = '';
-  bedOutTable.innerHTML = '';
+    bed1Table.innerHTML = '';
+    bed2Table.innerHTML = '';
+    bed3Table.innerHTML = '';
+    bed4Table.innerHTML = '';
   
   const now = new Date();
-console.log('========= bookings ', bookings)
   bookings.forEach(booking => {
     const row = createBookingRow(booking, now);
     
-    if (booking.bed === 'Giường trong') {
-      bedInTable.appendChild(row);
-    } else if (booking.bed === 'Giường giữa') {
-      bedMiddleTable.appendChild(row);
+    if (booking.bed === 'Giường 4') {
+      bed4Table.appendChild(row);
+    } else if (booking.bed === 'Giường 3') {
+      bed3Table.appendChild(row);
+    } else if (booking.bed === 'Giường 2') {
+      bed2Table.appendChild(row);
     } else {
-      bedOutTable.appendChild(row);
+      bed1Table.appendChild(row);
     }
   });
   
   // Show empty state if no bookings
-  if (bookings.filter(b => b.bed === 'Giường trong').length === 0) {
-    bedInTable.innerHTML = '<tr><td colspan="5" class="empty-state">Chưa có lịch hẹn</td></tr>';
+
+  if (bookings.filter(b => b.bed === 'Giường 4').length === 0) {
+    bed4Table.innerHTML = '<tr><td colspan="5" class="empty-state">Chưa có lịch hẹn</td></tr>';
+  }
+
+  if (bookings.filter(b => b.bed === 'Giường 3').length === 0) {
+    bed3Table.innerHTML = '<tr><td colspan="5" class="empty-state">Chưa có lịch hẹn</td></tr>';
   }
   
-  if (bookings.filter(b => b.bed === 'Giường giữa').length === 0) {
-    bedMiddleTable.innerHTML = '<tr><td colspan="5" class="empty-state">Chưa có lịch hẹn</td></tr>';
+  if (bookings.filter(b => b.bed === 'Giường 2').length === 0) {
+    bed2Table.innerHTML = '<tr><td colspan="5" class="empty-state">Chưa có lịch hẹn</td></tr>';
   }
   
-  if (bookings.filter(b => b.bed === 'Giường ngoài').length === 0) {
-    bedOutTable.innerHTML = '<tr><td colspan="5" class="empty-state">Chưa có lịch hẹn</td></tr>';
+  if (bookings.filter(b => b.bed === 'Giường 1').length === 0) {
+    bed1Table.innerHTML = '<tr><td colspan="5" class="empty-state">Chưa có lịch hẹn</td></tr>';
   }
 }
 
@@ -435,7 +443,7 @@ function drawTimeline(bookings) {
   }
   
   // Draw beds
-  const beds = ['Giường trong', 'Giường giữa', 'Giường ngoài'];
+  const beds = ['Giường 1', 'Giường 2', 'Giường 3', 'Giường 4'];
   
   beds.forEach((bed, index) => {
     const y = 50 + index * 70;

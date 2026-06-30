@@ -213,17 +213,18 @@ app.get('/api/services', (req, res) => {
   const extraServicePrice = 0;
 
   const services = {
-    [`Massage body nữ (${femaleMassageDuration}p) - ${femaleMassagePrice}K`]: { duration: femaleMassageDuration, price: femaleMassagePrice, subName: `Body nữ (${femaleMassageDuration}p) - ${femaleMassagePrice}K` },
-    [`Massage body nam (${maleMassageDuration}p) - ${maleMassagePrice}K`]: { duration: maleMassageDuration, price: maleMassagePrice, subName: `Body nam (${maleMassageDuration}p) - ${maleMassagePrice}K` },
-    [`Trị liệu cổ vai gáy (${neckShoulderDuration}p) - ${neckShoulderPrice}K`]: { duration: neckShoulderDuration, price: neckShoulderPrice, subName: `Cổ vai gáy (${neckShoulderDuration}p) - ${neckShoulderPrice}K` },
-    [`Trị liệu đau lưng (${backPainDuration}p) - ${backPainPrice}K`]: { duration: backPainDuration, price: backPainPrice, subName: `Đau lưng (${backPainDuration}p) - ${backPainPrice}K` },
-    [`Massage bụng (${bellyDuration}p) - ${bellyPrice}K`]: { duration: bellyDuration, price: bellyPrice, subName: `Bụng (${bellyDuration}p) - ${bellyPrice}K` },
     [`Gội đầu dưỡng sinh (${hairCareDuration1}p) - ${hairCarePrice1}K`]: { duration: hairCareDuration1, price: hairCarePrice1, subName: `Gội (${hairCareDuration1}p) - ${hairCarePrice1}K` },
     [`Gội đầu dưỡng sinh (${hairCareDuration2}p) - ${hairCarePrice2}K`]: { duration: hairCareDuration2, price: hairCarePrice2, subName: `Gội (${hairCareDuration2}p) - ${hairCarePrice2}K` },
     [`Gội đầu dưỡng sinh (${hairCareDuration3}p) - ${hairCarePrice3}K`]: { duration: hairCareDuration3, price: hairCarePrice3, subName: `Gội (${hairCareDuration3}p) - ${hairCarePrice3}K` },
     [`Gội đầu dưỡng sinh (${hairCareDuration4}p) - ${hairCarePrice4}K`]: { duration: hairCareDuration4, price: hairCarePrice4, subName: `Gội (${hairCareDuration4}p) - ${hairCarePrice4}K` },
     [`Gội đầu dưỡng sinh (${hairCareDuration5}p) - ${hairCarePrice110}K`]: { duration: hairCareDuration5, price: hairCarePrice110, subName: `Gội (${hairCareDuration5}p) - ${hairCarePrice110}K` },
-    [`Dịch vụ thêm (${extraServiceDuration}p)`]: { duration: extraServiceDuration, price: extraServicePrice, subName: `Thêm (${extraServiceDuration}p) - ${extraServicePrice}K` }
+    [`Dịch vụ thêm (${extraServiceDuration}p)`]: { duration: extraServiceDuration, price: extraServicePrice, subName: `Thêm (${extraServiceDuration}p) - ${extraServicePrice}K` },
+
+    [`Massage body nữ (${femaleMassageDuration}p) - ${femaleMassagePrice}K`]: { duration: femaleMassageDuration, price: femaleMassagePrice, subName: `Body nữ (${femaleMassageDuration}p) - ${femaleMassagePrice}K` },
+    [`Massage body nam (${maleMassageDuration}p) - ${maleMassagePrice}K`]: { duration: maleMassageDuration, price: maleMassagePrice, subName: `Body nam (${maleMassageDuration}p) - ${maleMassagePrice}K` },
+    [`Trị liệu cổ vai gáy (${neckShoulderDuration}p) - ${neckShoulderPrice}K`]: { duration: neckShoulderDuration, price: neckShoulderPrice, subName: `Cổ vai gáy (${neckShoulderDuration}p) - ${neckShoulderPrice}K` },
+    [`Trị liệu đau lưng (${backPainDuration}p) - ${backPainPrice}K`]: { duration: backPainDuration, price: backPainPrice, subName: `Đau lưng (${backPainDuration}p) - ${backPainPrice}K` },
+    [`Massage bụng (${bellyDuration}p) - ${bellyPrice}K`]: { duration: bellyDuration, price: bellyPrice, subName: `Bụng (${bellyDuration}p) - ${bellyPrice}K` },
   };
   res.json(services);
 });
