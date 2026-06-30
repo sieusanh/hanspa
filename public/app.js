@@ -404,7 +404,9 @@ function resetForm() {
 
 // Draw timeline (fixed width for horizontal scroll on mobile)
 const TIMELINE_WIDTH = 1150;
-const TIMELINE_HEIGHT = 260;
+// const TIMELINE_HEIGHT = 260;
+// const TIMELINE_HEIGHT = 50 + (beds.length * 70) + 20;
+const TIMELINE_HEIGHT = 360;
 
 function drawTimeline(bookings) {
   const canvas = document.getElementById('timelineCanvas');
@@ -447,6 +449,7 @@ function drawTimeline(bookings) {
   
   beds.forEach((bed, index) => {
     const y = 50 + index * 70;
+    // const y = 50 + index * 90;
     
     // Draw bed label
     ctx.font = 'bold 14px Arial';
@@ -478,12 +481,14 @@ function drawTimeline(bookings) {
       
       // Draw booking rectangle
       ctx.fillStyle = color;
-      ctx.fillRect(x1, y, width, 40);
+    //   ctx.fillRect(x1, y, width, 40);
+      ctx.fillRect(x1, y, width, 55);
       
       // Draw border
       ctx.strokeStyle = '#fff';
       ctx.lineWidth = 2;
-      ctx.strokeRect(x1, y, width, 40);
+    //   ctx.strokeRect(x1, y, width, 40);
+      ctx.strokeRect(x1, y, width, 55);
       
       // Draw text
       ctx.fillStyle = '#fff';
@@ -491,8 +496,10 @@ function drawTimeline(bookings) {
       const text1 = booking.customer;
       const text2 = `${formatTime(startTime)}-${formatTime(endTime)}`;
       
-      ctx.fillText(text1, x1 + 5, y + 18);
-      ctx.fillText(text2, x1 + 5, y + 32);
+    //   ctx.fillText(text1, x1 + 5, y + 18);
+    //   ctx.fillText(text2, x1 + 5, y + 32);
+    ctx.fillText(text1, x1 + 5, y + 22);
+      ctx.fillText(text2, x1 + 5, y + 38);
     });
   });
 }
