@@ -1,11 +1,62 @@
 // Configuration
 // const HOSTNAME = "hanspa"
+
+// Duration
+    const femaleMassageDuration = 60;
+    const maleMassageDuration = 60;
+    const neckShoulderDuration = 50;
+    const backPainDuration = 50;
+    const bellyDuration = 30;
+    // const hairCareDuration1 = 40;
+    // const hairCareDuration2 = 60;
+    // const hairCareDuration3 = 80;
+    // const hairCareDuration4 = 95;
+    // const hairCareDuration5 = 110;
+    const hairCareDuration1 = 35;
+    const hairCareDuration2 = 50;
+    const hairCareDuration3 = 60;
+    const hairCareDuration4 = 85;
+    const hairCareDuration5 = 100;
+    const extraServiceDuration = 15;
+    
+  // Price
+  const femaleMassagePrice = 150;
+  const maleMassagePrice   = 150;
+  const neckShoulderPrice = 180;
+  const backPainPrice = 180;
+  const bellyPrice = 150;
+  const hairCarePrice1 = 50;
+  const hairCarePrice2 = 70;
+  const hairCarePrice3 = 90;
+  const hairCarePrice4 = 150;
+  const hairCarePrice110 = 200;
+  const extraServicePrice = 0;
+
+   const services = {
+    [`Gội đầu dưỡng sinh (${hairCareDuration3}p) - ${hairCarePrice3}K`]: { duration: hairCareDuration3, price: hairCarePrice3, subName: `Gội (${hairCareDuration3}p) - ${hairCarePrice3}K` },
+    [`Gội đầu dưỡng sinh (${hairCareDuration1}p) - ${hairCarePrice1}K`]: { duration: hairCareDuration1, price: hairCarePrice1, subName: `Gội (${hairCareDuration1}p) - ${hairCarePrice1}K` },
+    [`Gội đầu dưỡng sinh (${hairCareDuration2}p) - ${hairCarePrice2}K`]: { duration: hairCareDuration2, price: hairCarePrice2, subName: `Gội (${hairCareDuration2}p) - ${hairCarePrice2}K` },
+    // [`Gội đầu dưỡng sinh (${hairCareDuration3}p) - ${hairCarePrice3}K`]: { duration: hairCareDuration3, price: hairCarePrice3, subName: `Gội (${hairCareDuration3}p) - ${hairCarePrice3}K` },
+    [`Gội đầu dưỡng sinh (${hairCareDuration4}p) - ${hairCarePrice4}K`]: { duration: hairCareDuration4, price: hairCarePrice4, subName: `Gội (${hairCareDuration4}p) - ${hairCarePrice4}K` },
+    [`Gội đầu dưỡng sinh (${hairCareDuration5}p) - ${hairCarePrice110}K`]: { duration: hairCareDuration5, price: hairCarePrice110, subName: `Gội (${hairCareDuration5}p) - ${hairCarePrice110}K` },
+    [`Dịch vụ thêm (${extraServiceDuration}p)`]: { duration: extraServiceDuration, price: extraServicePrice, subName: `Thêm (${extraServiceDuration}p) - ${extraServicePrice}K` },
+
+    [`Massage body nữ (${femaleMassageDuration}p) - ${femaleMassagePrice}K`]: { duration: femaleMassageDuration, price: femaleMassagePrice, subName: `Body nữ (${femaleMassageDuration}p) - ${femaleMassagePrice}K` },
+    [`Massage body nam (${maleMassageDuration}p) - ${maleMassagePrice}K`]: { duration: maleMassageDuration, price: maleMassagePrice, subName: `Body nam (${maleMassageDuration}p) - ${maleMassagePrice}K` },
+    [`Trị liệu cổ vai gáy (${neckShoulderDuration}p) - ${neckShoulderPrice}K`]: { duration: neckShoulderDuration, price: neckShoulderPrice, subName: `Cổ vai gáy (${neckShoulderDuration}p) - ${neckShoulderPrice}K` },
+    [`Trị liệu đau lưng (${backPainDuration}p) - ${backPainPrice}K`]: { duration: backPainDuration, price: backPainPrice, subName: `Đau lưng (${backPainDuration}p) - ${backPainPrice}K` },
+    [`Massage bụng (${bellyDuration}p) - ${bellyPrice}K`]: { duration: bellyDuration, price: bellyPrice, subName: `Bụng (${bellyDuration}p) - ${bellyPrice}K` },
+  };
+
+  const defaultServiceName = `Gội đầu dưỡng sinh (${hairCareDuration3}p) - ${hairCarePrice3}K`;
+
+
+
 const API_URL = `${window.location.origin}/api`;
 
 // const API_URL = `http://${HOSTNAME}:3456/api`;
 // const API_URL = `http://${HOSTNAME}:3456`;
 // const API_URL = `http://localhost:3456/api`;
-let services = {};
 let selectedBookingId = null;
 let currentDate = new Date().toISOString().split('T')[0];
 let datePicker = null;
@@ -77,9 +128,8 @@ function isMobile() {
 // Load services from API
 async function loadServices() {
   try {
-    const response = await fetch(`${API_URL}/services`);
-    services = await response.json();
-
+    // const response = await fetch(`${API_URL}/services`);
+    // const { services, defaultKey } = await response.json();
     const serviceSelect = document.getElementById('serviceSelect');
     serviceSelect.innerHTML = '';
 
@@ -90,6 +140,10 @@ async function loadServices() {
       option.textContent = showSubName && services[serviceName].subName
         ? services[serviceName].subName
         : serviceName;
+
+        if (serviceName === defaultServiceName) {
+            option.selected = true;
+        }
       serviceSelect.appendChild(option);
     });
 
@@ -397,6 +451,8 @@ function resetForm() {
   document.getElementById('deleteBtn').style.display = 'none';
   selectedBookingId = null;
   toggleExtraPriceVisibility();
+
+  loadServices();
   
   // Remove selection from rows
   document.querySelectorAll('tbody tr').forEach(r => r.classList.remove('selected'));
